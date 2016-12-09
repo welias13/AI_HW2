@@ -21,7 +21,7 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 num_of_paths = 500000
 
 #centrality function runs num_of_paths paths from random nodes with probality 0.99 to continue in path
-# @tools.timed
+@tools.timed
 def centrality(Roads):
     centrality_dict = {}
     #zeroing all nodes indexes to have 0 visits
@@ -52,7 +52,7 @@ def centrality(Roads):
     return sorted_nodes
 
 #build abstract search space used for betterwaze
-# @tools.timed
+@tools.timed
 def build_abstract_dict(Roads ,k = 0.005, m = 0.1):
     #getting the first k*N nodes to build the space for them
     with open("centrality.csv", 'rt') as c:

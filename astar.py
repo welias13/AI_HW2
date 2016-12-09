@@ -8,16 +8,14 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
 @tools.timed
 def astar(Roads, start, goal, h_func, m=1, cost_func=lambda x: x.distance):
-    # M*N' targets we need to get their paths starting from 'start'
-    mNtag = math.ceil(m * (len(goal)))
     # open nodes heap that stores nodes by minimal cost to get from source to them
-    open_heap = [(h_func(start), start)]
+    open_heap = [(h_func(Roads[start]), start)]
     # open set to used to check which nodes in heap
     open_set = set([start])
     # visited set to check which node we did visit
     visited = set([start])
     developed_nodes = 0
-    parents_dict = {start: (None, h_func(start), 0)}
+    parents_dict = {start: (None, h_func(Roads[start]), 0)}
     # keep evaluating as long as heap is not empty
     while open_heap:
         node = heapq.heappop(open_heap)
