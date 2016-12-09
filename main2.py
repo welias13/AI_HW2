@@ -35,9 +35,11 @@ def a_star_exp(Roads,source, target):
 #####################################################################################################
 #####################################################################################################
 def a_star_exp3(source, target,abstractMap):
-    return a_star_exp3_aux(source, target, abstractMap)
+    Roads = graph.load_map_from_csv()
+    return a_star_exp3_aux(Roads, source, target, abstractMap)
 
-def a_star_exp3_aux(source, target, abstractMap, experiment=False):
+@tools.timed
+def a_star_exp3_aux(Roads, source, target, abstractMap, experiment=False):
     develped_a = 0
     develped_b = 0
     develped_c = 0

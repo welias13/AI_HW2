@@ -6,6 +6,7 @@ import main2
 import ways.graph
 import abstract
 import pickle as pkl
+
 python_path = "C:\\Users\\welias\\AppData\\Local\\Continuum\\Anaconda3\\python.exe"
 
 source = 90274
@@ -27,9 +28,8 @@ abstract.centrality(Roads)
 abstract.build_abstract_dict(Roads, k=0.005, m=0.1)
 file_name = "abstractSpace.pkl"
 
-
 with open(file_name, 'rb') as pk:
     abstractMap = pkl.load(pk)
 
-print(main.betterWaze_exp(Roads,source,target,abstractMap))
-print(main2.a_star_exp3_aux(Roads,source,target,abstractMap,experiment=True ))
+print(main.betterWaze_exp(Roads, source, target, abstractMap))
+print(main2.a_star_exp3_aux(Roads, source, target, abstractMap, True))
