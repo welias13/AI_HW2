@@ -35,8 +35,6 @@ Roads = ways.graph.load_map_from_csv()
 # #
 #
 #
-source = 712
-target = 41761
 print(main.base_exp(Roads, source, target))
 print(main2.a_star_exp(Roads, source, target))
 

@@ -15,19 +15,20 @@ def astar(Roads, start, goal, h_func, m=1, cost_func=lambda x: x.distance):
     # visited set to check which node we did visit
     visited = set([start])
     developed_nodes = 0
+    developed_nodes_set = set([start])
     parents_dict = {start: (None, h_func(Roads[start]), 0)}
     # keep evaluating as long as heap is not empty
     while open_heap:
         node = heapq.heappop(open_heap)
         cost = node[0]  # f cost
+        if node[1] not in open_set:
+            continue
         open_set.discard(node[1])
         # check if current node is one of goals
         if node[1] == goal:
             #  check we got paths for all our targets= M*N' then stop
             break
-            # node expansion
-        if node[1] in visited and parents_dict[node[1]][1] < cost:
-            continue
+        # node expansion
         developed_nodes += 1
         for i in Roads[node[1]].links:
             g_total_cost = parents_dict[node[1]][2] + cost_func(i)

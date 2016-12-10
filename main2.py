@@ -19,7 +19,7 @@ def ex_h_func(junc):
 
 
 def h_func_aux(junc1, junc2):
-    return tools.compute_distance(junc1.lat, junc1.lon, junc2.lat, junc2.lon)
+    return 1000*tools.compute_distance(junc1.lat, junc1.lon, junc2.lat, junc2.lon)
 
 
 def a_star(source, target):
