@@ -9,9 +9,12 @@ import pickle as pkl
 python_path_emad = "python"
 python_path = "C:\\Users\\welias\\AppData\\Local\\Continuum\\Anaconda3\\python.exe"
 
-source = 43333
-target = 21150
+# source = 43333
+# target = 21150
+# 44778	60962
 
+source = 44778
+target = 60962
 Roads = ways.graph.load_map_from_csv()
 # source = 86936
 # target = 37951
