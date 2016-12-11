@@ -54,7 +54,6 @@ def a_star_exp3_aux(Roads, source, target, abstractMap, experiment=False):
         # Note: pickle might give you an error for the namedtuples, even if they
         # are imported indirectly from ways.graph. You might need to declare, for
         # example: Link = ways.graph.Link
-    # Roads = graph.load_map_from_csv()
     final_list = []
     try:
         # phase a
