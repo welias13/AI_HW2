@@ -14,12 +14,10 @@ import ways.tools as tools
 import sys
 import ways
 import ucs
+from cost import time_cost_func
+import ways.info as info
 
-
-max_speed = 0
-
-def time_cost_func(link):
-    return (link.distance/1000)/graph.current_speed(link)
+max_speed = max([j[1] for j in info.SPEED_RANGES])
 
 def time_h_func_aux(junc1,junc2):
     return tools.compute_distance(junc1.lat, junc1.lon, junc2.lat, junc2.lon)/max_speed
@@ -33,6 +31,7 @@ def uc_time(source, target):
     
 def a_star_time(source, target):
     Roads = graph.load_map_from_csv()
+    print("max speed = " + str(max_speed))
     result = astar(Roads, source, target, h_func=lambda junc: time_h_func_aux(junc, Roads[target]), cost_func=time_cost_func)
     return result[0]
 
