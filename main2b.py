@@ -14,7 +14,7 @@ import ways.tools as tools
 import sys
 import ways
 import ucs
-from cost import time_cost_func
+from cost import expected_time
 import ways.info as info
 
 max_speed = max([j[1] for j in info.SPEED_RANGES])
@@ -24,7 +24,7 @@ def time_h_func_aux(junc1,junc2):
 
 def uc_time(source, target):
     Roads = ways.graph.load_map_from_csv()
-    (ucs_path, num_developed_nodes) = ucs.normal_ucs(Roads, source, [target], 1,cost_func=time_cost_func)
+    (ucs_path, num_developed_nodes) = ucs.normal_ucs(Roads, source, [target], 1, cost_func=expected_time)
     ucs_path = ucs_path[0]
     return ucs_path[2]
 
@@ -32,16 +32,16 @@ def uc_time(source, target):
 def a_star_time(source, target):
     Roads = graph.load_map_from_csv()
     print("max speed = " + str(max_speed))
-    result = astar(Roads, source, target, h_func=lambda junc: time_h_func_aux(junc, Roads[target]), cost_func=time_cost_func)
+    result = astar(Roads, source, target, h_func=lambda junc: time_h_func_aux(junc, Roads[target]), cost_func=expected_time)
     return result[0]
 
 def uc_time_exp(Roads,source, target):
-    (ucs_path, num_developed_nodes) = ucs.normal_ucs(Roads, source, [target], 1,cost_func=time_cost_func)
+    (ucs_path, num_developed_nodes) = ucs.normal_ucs(Roads, source, [target], 1, cost_func=expected_time)
     ucs_path = ucs_path[0]
     return (num_developed_nodes, ucs_path[1])
 
 def a_star_time_exp(Roads,source, target):
-    result = astar(Roads, source, target, h_func=lambda junc: time_h_func_aux(junc, Roads[target]), cost_func=time_cost_func)
+    result = astar(Roads, source, target, h_func=lambda junc: time_h_func_aux(junc, Roads[target]), cost_func=expected_time)
     return result[2], result[1]
 
 def dispatch(argv):
