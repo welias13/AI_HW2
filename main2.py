@@ -13,36 +13,28 @@ import ways.tools as tools
 import sys
 
 
-def ex_h_func(junc):
-    h_dict = {1: 9, 2: 10, 3: 11, 4: 15, 5: 1, 6: 2, 7: 5, 8: 0}
-    return h_dict[junc.index]
-
-
+# aux function for Euclidious distance based heuristic function. returns the air distance between to junctions in meters.
 def h_func_aux(junc1, junc2):
     return 1000*tools.compute_distance(junc1.lat, junc1.lon, junc2.lat, junc2.lon)
 
-
+# perform a_star search with air distance based heuristic
 def a_star(source, target):
     Roads = graph.load_map_from_csv()
     result = astar(Roads, source, target, h_func=lambda junc: h_func_aux(junc, Roads[target]))
     return result[0]
 
-
+# same as a_star, returns information relevant for the experiment.
 def a_star_exp(Roads, source, target):
     result = astar(Roads, source, target, h_func=lambda junc: h_func_aux(junc, Roads[target]))
     return result[2], result[1]
 
-
-#####################################################################################################
-#####################################################################################################
-#####################################################################################################
-#####################################################################################################
+##########################################################################################
+# perform a_star_exp3 search with air distance based heuristic with experiment=False
 def a_star_exp3(source, target, abstractMap):
     Roads = graph.load_map_from_csv()
     return a_star_exp3_aux(Roads, source, target, abstractMap)
 
-
-@tools.timed
+# same as a_star_exp3, returns information relevant for the experiment if experiment=True.
 def a_star_exp3_aux(Roads, source, target, abstractMap, experiment=False):
     develped_a = 0
     develped_b = 0
@@ -54,7 +46,6 @@ def a_star_exp3_aux(Roads, source, target, abstractMap, experiment=False):
         # Note: pickle might give you an error for the namedtuples, even if they
         # are imported indirectly from ways.graph. You might need to declare, for
         # example: Link = ways.graph.Link
-    final_list = []
     try:
         # phase a
         # find the closet abstract space node to A by air distance
@@ -65,17 +56,17 @@ def a_star_exp3_aux(Roads, source, target, abstractMap, experiment=False):
             # compute the distance using provided func
             current_distance = tools.compute_distance(Roads[center].lat, Roads[center].lon, Roads[source].lat,
                                                       Roads[source].lon)
-            # update if new node is closer to B
+            # update if new node is closer to A
             if current_distance < junc1_min_distance:
                 junc1_index = center
                 junc1_min_distance = current_distance
-        # run ucs from junc2 to B to get the path
+        # run a_star from A to junc2 to get the path
         (a_star_path, a_cost, develped_a) = astar(Roads, source, junc1_index,
                                                   h_func=lambda junc: h_func_aux(junc, Roads[junc1_index]))
         cost += a_cost
         if a_star_path:
             junc1_path = a_star_path
-        # if this phace failed run normal ucs from A to B by throwing exception that is dealt after
+        # if this phase failed run normal a_star from A to B by throwing exception that is dealt after
         else:
             raise Exception("Phase a failed")
         # phase b
@@ -91,7 +82,7 @@ def a_star_exp3_aux(Roads, source, target, abstractMap, experiment=False):
             if current_distance < junc2_min_distance:
                 junc2_index = center
                 junc2_min_distance = current_distance
-        # run ucs from junc2 to B to get the path
+        # run a_star from junc2 to B to get the path
         (a_star_path, b_cost, develped_b) = astar(Roads, junc2_index, target,
                                                   h_func=lambda junc: h_func_aux(junc, Roads[target]))
         cost += b_cost
@@ -102,13 +93,13 @@ def a_star_exp3_aux(Roads, source, target, abstractMap, experiment=False):
             raise Exception("Phase b failed")
 
         # phase c
-        # run ucs from junc1 to junc2 in normal search space
+        # run a_star from junc1 to junc2 in abstract search space
         (a_star_path, c_cost, develped_c) = astar(abstractMap, junc1_index, junc2_index,
                                                   h_func=lambda junc: h_func_aux(junc, Roads[junc2_index]),
                                                   cost_func=lambda x: x.cost)
         cost += c_cost
         if a_star_path:
-            # path for j1 to j2
+            # path from j1 to j2
             abstract_index_list = a_star_path
             if junc1_index == junc2_index:
                 junc_1_2_path = [junc1_index]
@@ -120,10 +111,10 @@ def a_star_exp3_aux(Roads, source, target, abstractMap, experiment=False):
                     abstact_link_list = [lnk.path for lnk in abstractMap[abstract_index_list[i - 1]].links if
                                          lnk.target == abstract_index_list[i]]
                     abstact_link_list = abstact_link_list[0]
-                    # extracth the path from junc1 to junc2 from the link
+                    # extract the path from junc1 to junc2 from the link
                     expanded_list = expanded_list + abstact_link_list[1:len(abstact_link_list)]
                 junc_1_2_path = expanded_list
-        # if this phace failed run normal ucs from A to B by throwing exception that is dealt after
+        # if this phace failed run normal a_star from A to B by throwing exception that is dealt after
         else:
             raise Exception("Phase c failed")
         # append all three paths from phases a,b,c respectively
@@ -134,6 +125,7 @@ def a_star_exp3_aux(Roads, source, target, abstractMap, experiment=False):
     # exception is caught therefor we need to run norma ucs from A to B
     except:
         print('astar failed!!')
+        # a_star_exp3 failed. run a_star in the real space. then return relevan information
         (a_star_path, cost, fail_num_dev) = astar(Roads, source, target,
                                                   h_func=lambda junc: h_func_aux(junc, Roads[target]))
         if experiment:

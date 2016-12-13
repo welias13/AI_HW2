@@ -46,7 +46,7 @@ if __name__ == "__main__":
             pairs_list.append((int(row[0]), int(row[1])))
     pairs_dict = dict(pairs_list)
 
-    # caculate path on each pair using base func, return dict that maps (index,index) to (number of node explored,cost)
+    # caculate path on each pair using base func and the a_star_exp
     for start_index in pairs_dict.keys():
         goal_index = pairs_dict[start_index]
         ucs_base_result = main.base_exp(Roads, start_index, goal_index)  # store this data
@@ -55,7 +55,7 @@ if __name__ == "__main__":
         astar_base_results_dict[(start_index, goal_index)] = (astar_base_result[0], astar_base_result[1])
         # (res[0],res[1])=(number of nodes explored,cost)
 
-    # caculate path on each pair using betterWaze func, return dict that maps (index,index) to (number of node explored,cost)
+    # caculate path on each pair using betterWaze func (ucs_exp3) and a_star_exp3.
     for k in k_list:
         ucs_abs_results_dict = {}
         astar_abs_results_dict = {}
@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     logging.info("starting writing csv file")
     try:
-        # write the result to file experiment.csv with format = start,goal,#node,cost,#node,cost,#node,cost..
+        # write the result to file experiment2.csv with format = start,goal,#node,cost,#node,cost,#node,cost..
         with open('experiment2.csv', 'w', newline='') as out:
             csv_out = csv.writer(out)
             for start_index in pairs_dict.keys():

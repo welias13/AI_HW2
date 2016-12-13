@@ -20,17 +20,17 @@ if __name__ == "__main__":
     astar_base_results_dict = {}
 
 
-    logging.info("starting experiment2 test...")
+    logging.info("starting experiment3 test...")
 
     Roads = ways.graph.load_map_from_csv()
-
+    # get data set
     with open("dataSet.csv", 'rt') as c:
         it = itertools.islice(c, 20)  # 20 or 19
         for row in csv.reader(it):
             pairs_list.append((int(row[0]), int(row[1])))
     pairs_dict = dict(pairs_list)
 
-    # caculate path on each pair using base func, return dict that maps (index,index) to (number of node explored,cost)
+    # caculate path on each pair using a_star_time_exp3 and uc_time
     for start_index in pairs_dict.keys():
         goal_index = pairs_dict[start_index]
         ucs_base_result = main2b.uc_time_exp(Roads, start_index, goal_index)  # store this data
@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
     logging.info("starting writing csv file")
     try:
-        # write the result to file experiment.csv with format = start,goal,#node,cost,#node,cost,#node,cost..
+        # write the result to file experiment3.csv with format = start,goal,#node,cost,#node,cost,#node,cost..
         with open('experiment3.csv', 'w', newline='') as out:
             csv_out = csv.writer(out)
             for start_index in pairs_dict.keys():
