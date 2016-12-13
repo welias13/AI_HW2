@@ -22,7 +22,7 @@ def calculate_path(parents_dict,node):
 
 
 #func that runs normal ucs from start index to goals indexes list
-@tools.timed
+#@tools.timed
 def normal_ucs(Roads, start, goals, m, cost_func = lambda x : x.distance):
     #M*N' targets we need to get their paths starting from 'start'
     mNtag = math.ceil(m*(len(goals)))

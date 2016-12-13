@@ -28,16 +28,16 @@ if __name__ == "__main__":
     logging.info("starting experiment2 test...")
 
     Roads = ways.graph.load_map_from_csv()
-    # abstract.centrality(Roads)
-    # dataSet.generate_data_set(Roads)
+    abstract.centrality(Roads)
+    #dataSet.generate_data_set(Roads)
 
     k_list = [0.0025, 0.005, 0.01, 0.05]
 
     # k_list = [0.0025, 0.005, 0.01, 0.05]
 
-    # for k in k_list:
-    #     abstract.build_abstract_dict(Roads, k, m=0.1)
-    #     os.rename("abstractSpace.pkl", 'abstractSpace' + str(k) + '.pkl')
+    for k in k_list:
+        abstract.build_abstract_dict(Roads, k, m=0.1)
+        os.rename("abstractSpace.pkl", 'abstractSpace' + str(k) + '.pkl')
 
     # loading the pairs to run the experiment on,a sum of 20 pairs as a dict
     with open("dataSet.csv", 'rt') as c:
